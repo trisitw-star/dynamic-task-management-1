@@ -20,7 +20,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
     isCurrent: shift.name === currentShift
   }))
 
-  const totalActive = technicians.filter(t => t.shift !== 'หยุด').length
+  const totalActive = technicians.filter(t => t.shift !== 'Day Off').length
   const currentShiftCount = technicians.filter(t => t.shift === currentShift).length
 
   return (
@@ -35,7 +35,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{technicians.length}</p>
-                <p className="text-xs text-muted-foreground">ช่างทั้งหมด</p>
+                <p className="text-xs text-muted-foreground">Total Technicians</p>
               </div>
             </div>
           </CardContent>
@@ -49,7 +49,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{totalActive}</p>
-                <p className="text-xs text-muted-foreground">ปฏิบัติงาน</p>
+                <p className="text-xs text-muted-foreground">On Duty</p>
               </div>
             </div>
           </CardContent>
@@ -63,7 +63,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
               </div>
               <div>
                 <p className="text-2xl font-bold text-foreground">{currentShiftCount}</p>
-                <p className="text-xs text-muted-foreground">กะ{currentShift} (ปัจจุบัน)</p>
+                <p className="text-xs text-muted-foreground">{currentShift} Shift (Current)</p>
               </div>
             </div>
           </CardContent>
@@ -76,8 +76,8 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
                 <AlertCircle className="h-5 w-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-2xl font-bold text-foreground">{technicians.filter(t => t.shift === 'หยุด').length}</p>
-                <p className="text-xs text-muted-foreground">หยุดงาน</p>
+                <p className="text-2xl font-bold text-foreground">{technicians.filter(t => t.shift === 'Day Off').length}</p>
+                <p className="text-xs text-muted-foreground">Day Off</p>
               </div>
             </div>
           </CardContent>
@@ -87,7 +87,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
       {/* Shift Distribution */}
       <Card className="border-border">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-foreground">การกระจายตามกะ</CardTitle>
+          <CardTitle className="text-base font-semibold text-foreground">Shift Distribution</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -106,12 +106,12 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
                     {shift.name}
                   </Badge>
                   {shift.isCurrent && (
-                    <span className="text-xs text-primary font-medium animate-pulse">● ปัจจุบัน</span>
+                    <span className="text-xs text-primary font-medium animate-pulse">● Current</span>
                   )}
                 </div>
                 <p className="text-3xl font-bold text-foreground">{shift.count}</p>
                 <p className="text-xs text-muted-foreground">
-                  {shift.startTime === '-' ? 'วันหยุด' : `${shift.startTime} - ${shift.endTime}`}
+                  {shift.startTime === '-' ? 'Day Off' : `${shift.startTime} - ${shift.endTime}`}
                 </p>
                 
                 {/* Progress bar */}
@@ -119,10 +119,10 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
                   <div 
                     className={cn(
                       "h-full rounded-full transition-all",
-                      shift.name === 'เช้า' && "bg-gray-400",
-                      shift.name === 'บ่าย' && "bg-red-600",
-                      shift.name === 'ดึก' && "bg-yellow-400",
-                      shift.name === 'หยุด' && "bg-green-500"
+                      shift.name === 'Morning' && "bg-gray-400",
+                      shift.name === 'Afternoon' && "bg-red-600",
+                      shift.name === 'Night' && "bg-yellow-400",
+                      shift.name === 'Day Off' && "bg-green-500"
                     )}
                     style={{ width: `${(shift.count / technicians.length) * 100}%` }}
                   />
@@ -136,11 +136,11 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
       {/* Department Distribution */}
       <Card className="border-border">
         <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-foreground">การกระจายตามแผนก</CardTitle>
+          <CardTitle className="text-base font-semibold text-foreground">Department Distribution</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="space-y-3">
-            {['ซ่อมบำรุง', 'ไฟฟ้า', 'เครื่องกล'].map(dept => {
+            {['Maintenance', 'Electrical', 'Mechanical'].map(dept => {
               const deptTechs = technicians.filter(t => t.department === dept)
               const deptShifts = SHIFT_TIMES.map(s => ({
                 name: s.name,
@@ -161,7 +161,7 @@ export function ShiftOverview({ technicians }: ShiftOverviewProps) {
                     ))}
                   </div>
                   <div className="text-sm font-medium text-muted-foreground">
-                    รวม: {deptTechs.length}
+                    Total: {deptTechs.length}
                   </div>
                 </div>
               )

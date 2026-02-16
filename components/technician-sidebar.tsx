@@ -58,15 +58,15 @@ export function TechnicianSidebar({ technicians, selectedId, onSelect }: Technic
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="ค้นหาชื่อ, รหัส, แผนก..."
+            placeholder="Search name, ID, department..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10 bg-muted border-border"
           />
         </div>
         <div className="mt-3 flex items-center justify-between text-sm text-muted-foreground">
-          <span>ทั้งหมด {filteredTechnicians.length} คน</span>
-          <span className="text-xs">กดเพื่อแก้ไขกะ</span>
+          <span>Total {filteredTechnicians.length} people</span>
+          <span className="text-xs">Click to edit shift</span>
         </div>
       </div>
       
@@ -82,10 +82,10 @@ export function TechnicianSidebar({ technicians, selectedId, onSelect }: Technic
                   {group.shift}
                 </Badge>
                 {group.isCurrent && (
-                  <span className="text-xs font-medium text-primary animate-pulse">● กะปัจจุบัน</span>
+                  <span className="text-xs font-medium text-primary animate-pulse">● Current Shift</span>
                 )}
               </div>
-              <span className="text-xs text-muted-foreground">{group.technicians.length} คน</span>
+              <span className="text-xs text-muted-foreground">{group.technicians.length} people</span>
             </div>
             
             <div className="divide-y divide-border">
@@ -119,7 +119,7 @@ export function TechnicianSidebar({ technicians, selectedId, onSelect }: Technic
         {filteredTechnicians.length === 0 && (
           <div className="p-8 text-center text-muted-foreground">
             <User className="h-12 w-12 mx-auto mb-3 opacity-50" />
-            <p>ไม่พบช่างที่ค้นหา</p>
+            <p>No technicians found</p>
           </div>
         )}
       </div>

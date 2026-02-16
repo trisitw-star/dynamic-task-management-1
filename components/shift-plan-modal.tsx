@@ -14,16 +14,16 @@ interface ShiftPlanModalProps {
   onSave: (id: string, plans: ShiftPlan[]) => void
 }
 
-const THAI_DAYS = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส']
-const THAI_MONTHS = [
-  'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
-  'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+const MONTH_LABELS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
 ]
 
 export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalProps) {
   const [plans, setPlans] = useState<ShiftPlan[]>([...technician.shiftPlans])
   const [selectedDates, setSelectedDates] = useState<string[]>([])
-  const [selectedShift, setSelectedShift] = useState<ShiftType>('เช้า')
+  const [selectedShift, setSelectedShift] = useState<ShiftType>('Morning')
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isSaving, setIsSaving] = useState(false)
 
@@ -124,7 +124,7 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
         <div className="bg-primary p-4 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-3">
             <CalendarDays className="h-5 w-5 text-primary-foreground" />
-            <h2 className="text-lg font-bold text-primary-foreground">วางแผนกะล่วงหน้า</h2>
+            <h2 className="text-lg font-bold text-primary-foreground">Plan Shifts in Advance</h2>
           </div>
           <button 
             onClick={onClose}
@@ -160,7 +160,7 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
                   <ChevronLeft className="h-5 w-5" />
                 </button>
                 <span className="font-medium text-sm">
-                  {THAI_MONTHS[currentMonth.getMonth()]} {currentMonth.getFullYear() + 543}
+                  {MONTH_LABELS[currentMonth.getMonth()]} {currentMonth.getFullYear()}
                 </span>
                 <button 
                   onClick={nextMonth}
@@ -172,7 +172,7 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
 
               {/* Day Headers */}
               <div className="grid grid-cols-7 gap-1 mb-1">
-                {THAI_DAYS.map(day => (
+                {DAY_LABELS.map(day => (
                   <div key={day} className="text-center text-xs font-medium text-muted-foreground py-1">
                     {day}
                   </div>
@@ -220,10 +220,10 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
               {selectedDates.length > 0 && (
                 <div className="mt-3 pt-3 border-t border-border">
                   <p className="text-xs text-muted-foreground mb-2">
-                    เลือกแล้ว {selectedDates.length} วัน - กำหนดกะ:
+                    {selectedDates.length} day(s) selected - Assign shift:
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {SHIFT_TIMES.filter(s => s.name !== 'หยุด').map(shift => (
+                    {SHIFT_TIMES.filter(s => s.name !== 'Day Off').map(shift => (
                       <button
                         key={shift.name}
                         onClick={() => setSelectedShift(shift.name)}
@@ -238,15 +238,15 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
                       </button>
                     ))}
                     <button
-                      onClick={() => setSelectedShift('หยุด')}
+                      onClick={() => setSelectedShift('Day Off')}
                       className={cn(
                         "px-2 py-1 rounded text-xs transition-all border",
-                        selectedShift === 'หยุด'
+                        selectedShift === 'Day Off'
                           ? "border-primary bg-muted text-muted-foreground"
                           : "border-border hover:border-primary/50"
                       )}
                     >
-                      หยุด
+                      Day Off
                     </button>
                   </div>
                   <Button 
@@ -255,7 +255,7 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
                     onClick={addPlansForSelectedDates}
                   >
                     <Plus className="h-4 w-4 mr-1" />
-                    เพิ่มแผนกะ
+                    Add Shift Plan
                   </Button>
                 </div>
               )}
@@ -265,14 +265,14 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
             <div className="border border-border rounded-lg p-3">
               <h4 className="font-medium text-sm mb-3 flex items-center gap-2">
                 <CalendarDays className="h-4 w-4 text-primary" />
-                แผนกะที่กำหนดไว้
+                Planned Shifts
               </h4>
               
               {plans.length === 0 ? (
                 <div className="text-center py-8 text-muted-foreground text-sm">
                   <CalendarDays className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                  <p>ยังไม่มีแผนกะล่วงหน้า</p>
-                  <p className="text-xs mt-1">เลือกวันที่ในปฏิทินเพื่อกำหนดกะ</p>
+                  <p>No advance shift plans yet</p>
+                  <p className="text-xs mt-1">Select dates on the calendar to assign shifts</p>
                 </div>
               ) : (
                 <div className="space-y-2 max-h-[300px] overflow-auto">
@@ -286,7 +286,7 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
                       >
                         <div className="flex items-center gap-2">
                           <span className="text-sm font-medium">
-                            {date.getDate()} {THAI_MONTHS[date.getMonth()].slice(0, 3)} {date.getFullYear() + 543}
+                            {MONTH_LABELS[date.getMonth()].slice(0, 3)} {date.getDate()}, {date.getFullYear()}
                           </span>
                           <Badge className={cn("text-xs", shiftInfo?.color)}>
                             {plan.shift}
@@ -314,14 +314,14 @@ export function ShiftPlanModal({ technician, onClose, onSave }: ShiftPlanModalPr
             className="flex-1 bg-transparent"
             onClick={onClose}
           >
-            ยกเลิก
+            Cancel
           </Button>
           <Button 
             className="flex-1 bg-primary hover:bg-primary/90"
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
           >
-            {isSaving ? "กำลังบันทึก..." : "บันทึกแผนกะ"}
+            {isSaving ? "Saving..." : "Save Shift Plan"}
           </Button>
         </div>
       </div>

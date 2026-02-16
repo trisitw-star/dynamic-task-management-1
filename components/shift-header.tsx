@@ -17,7 +17,7 @@ export function ShiftHeader() {
   }, [])
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString('th-TH', {
+    return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit'
@@ -25,7 +25,7 @@ export function ShiftHeader() {
   }
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('th-TH', {
+    return date.toLocaleDateString('en-US', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -42,8 +42,8 @@ export function ShiftHeader() {
               <Users className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">ระบบจัดการกะทำงาน</h1>
-              <p className="text-sm text-muted-foreground">บริหารจัดการกะช่างอย่างมีประสิทธิภาพ</p>
+              <h1 className="text-xl font-bold text-foreground">Shift Management System</h1>
+              <p className="text-sm text-muted-foreground">Efficient technician shift management</p>
             </div>
           </div>
           
@@ -59,7 +59,7 @@ export function ShiftHeader() {
             </div>
             
             <div className={`flex items-center gap-2 rounded-lg px-3 py-2 ${shiftInfo?.color}`}>
-              <span className="text-sm font-medium">กะปัจจุบัน:</span>
+              <span className="text-sm font-medium">Current Shift:</span>
               <span className="font-bold">{currentShift}</span>
               <span className="text-xs opacity-80">({shiftInfo?.startTime} - {shiftInfo?.endTime})</span>
             </div>

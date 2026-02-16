@@ -40,7 +40,7 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
       <div className="relative bg-card rounded-xl shadow-2xl w-full max-w-md mx-4 overflow-hidden border border-border">
         {/* Header */}
         <div className="bg-primary p-4 flex items-center justify-between">
-          <h2 className="text-lg font-bold text-primary-foreground">แก้ไขกะทำงาน</h2>
+          <h2 className="text-lg font-bold text-primary-foreground">Edit Work Shift</h2>
           <button 
             onClick={onClose}
             className="p-1 rounded-full hover:bg-primary-foreground/20 transition-colors"
@@ -80,7 +80,7 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
         {/* Current Shift */}
         <div className="px-4 py-3 border-b border-border">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-muted-foreground">กะปัจจุบัน:</span>
+            <span className="text-sm text-muted-foreground">Current Shift:</span>
             <Badge className={cn(
               "text-sm",
               SHIFT_TIMES.find(s => s.name === technician.shift)?.color
@@ -94,7 +94,7 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
         <div className="p-4">
           <label className="text-sm font-medium text-foreground flex items-center gap-2 mb-3">
             <Clock className="h-4 w-4" />
-            เลือกกะใหม่:
+            Select New Shift:
           </label>
           
           <div className="grid grid-cols-2 gap-3">
@@ -118,7 +118,7 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
                   {shift.name}
                 </Badge>
                 <p className="text-xs text-muted-foreground mt-1">
-                  {shift.startTime === '-' ? 'วันหยุด' : `${shift.startTime} - ${shift.endTime}`}
+                  {shift.startTime === '-' ? 'Day Off' : `${shift.startTime} - ${shift.endTime}`}
                 </p>
               </button>
             ))}
@@ -133,7 +133,7 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
             onClick={onOpenPlanModal}
           >
             <CalendarDays className="h-4 w-4 mr-2" />
-            วางแผนกะล่วงหน้า
+            Plan Shifts in Advance
             {technician.shiftPlans.length > 0 && (
               <Badge className="ml-2 bg-primary text-primary-foreground text-xs">
                 {technician.shiftPlans.length}
@@ -149,14 +149,14 @@ export function EditShiftModal({ technician, onClose, onSave, onOpenPlanModal }:
             className="flex-1 bg-transparent"
             onClick={onClose}
           >
-            ยกเลิก
+            Cancel
           </Button>
           <Button 
             className="flex-1 bg-primary hover:bg-primary/90"
             onClick={handleSave}
             disabled={!hasChanges || isSaving}
           >
-            {isSaving ? "กำลังบันทึก..." : "บันทึกการเปลี่ยนแปลง"}
+            {isSaving ? "Saving..." : "Save Changes"}
           </Button>
         </div>
       </div>
